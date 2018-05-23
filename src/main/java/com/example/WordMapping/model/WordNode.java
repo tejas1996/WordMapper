@@ -7,8 +7,11 @@ public class WordNode {
 
     String word;
     int lenght;
-    WordNode mostRelevantWord;
-    HashMap<WordNode, Integer> connectedNodes;
+    ArrayList<WordNode> mostRelevantWords;
 
-
+    public WordNode(String word) {
+        this.word = word;
+        lenght = word.length();
+        mostRelevantWords = new ArrayList<>();
+    }
 }

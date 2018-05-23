@@ -17,15 +17,20 @@ public class IndexMap {
         numberOfWords = 0;
     }
 
-    public void addEntry(String word) {
+    public int addEntry(String word) {
 
         if (!indexMap.containsKey(word)) {
             indexMap.put(word, numberOfWords++);
         }
+        System.out.println("added a entry");
+        return numberOfWords;
     }
 
     public int getIndex(String word) {
-        return indexMap.get(word);
+        Integer value = indexMap.get(word);
+        if (value == null)
+            return -1;
+        return value;
     }
 
 

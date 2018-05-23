@@ -20,6 +20,7 @@ public class Wordmap {
         if (!wordMap.containsKey(wordNode.word)) {
             wordMap.put(wordNode.word, wordNode);
         }
+        System.out.println("added a node");
     }
 
 
