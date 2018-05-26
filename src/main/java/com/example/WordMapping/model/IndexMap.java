@@ -20,7 +20,7 @@ public class IndexMap {
     public int addEntry(String word) {
 
         if (!indexMap.containsKey(word)) {
-            indexMap.put(word, numberOfWords++);
+            indexMap.put(word, ++numberOfWords);
         }
         System.out.println("added a entry");
         return numberOfWords;
