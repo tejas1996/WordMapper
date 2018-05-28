@@ -3,9 +3,6 @@ package com.example.WordMapping.model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-
 @Service
 public class Heart {
 
@@ -15,9 +12,12 @@ public class Heart {
     @Autowired
     Wordmap wordmap;
 
-    int numberOfWords = 0;
-
-    int[][] array = new int[1000][1000];
+    static final int V = 3;
+    int numberOfWords = 3;
+    double[][] A = {{10, 1, 10},
+            {1, 10, 1},
+            {10, 1, 10}
+    };
 
     public void addNode() {
 
@@ -49,7 +49,7 @@ public class Heart {
 
     }
 
-    static final int V = 9;
+    double[][] array = new double[1000][1000];
 
     public String getDistance(String word1, String word2) {
         Integer c = indexMap.getIndex(word1);
@@ -61,20 +61,39 @@ public class Heart {
             return "-1";
         }
 
-        int distance = array[c][d];
-        String s = Integer.toString(distance);
+        double distance = array[c][d];
+        String s = Double.toString(distance);
         return s;
 
     }
 
     public void print() {
 
-        dijkstra(array, 1);
+        A = reShuffle(A);
+        A = reShuffle(A);
+
+        System.out.println("hey");
+    }
+
+    public double[][] reShuffle(double[][] graph) {
+
+        double distance[] = new double[100];
+        for (int i = 0; i < numberOfWords; i++) {
+            distance = dijkstra(graph, i);
+            for (int j = 0; j < numberOfWords; j++) {
+                graph[i][j] = distance[j];
+                graph[j][i] = distance[j];
+            }
+
+        }
+        return graph;
+
 
     }
 
-    public void dijkstra(int graph[][], int src) {
-        int dist[] = new int[V]; // The output array. dist[i] will hold
+
+    public double[] dijkstra(double[][] graph, int src) {
+        double dist[] = new double[V]; // The output array. dist[i] will hold
         // the shortest distance from src to i
 
         // sptSet[i] will true if vertex i is included in shortest
@@ -83,7 +102,7 @@ public class Heart {
 
         // Initialize all distances as INFINITE and stpSet[] as false
         for (int i = 0; i < V; i++) {
-            dist[i] = Integer.MAX_VALUE;
+            dist[i] = 100;
             sptSet[i] = false;
         }
 
@@ -108,18 +127,20 @@ public class Heart {
                 // edge from u to v, and total weight of path from src to
                 // v through u is smaller than current value of dist[v]
                 if (!sptSet[v] && graph[u][v] != 0 &&
-                        dist[u] != Integer.MAX_VALUE &&
+                        dist[u] != 100 &&
                         dist[u] + graph[u][v] < dist[v])
                     dist[v] = dist[u] + graph[u][v];
         }
 
         // print the constructed distance array
         printSolution(dist, V);
+        return dist;
     }
 
-    int minDistance(int dist[], Boolean sptSet[]) {
+    int minDistance(double dist[], Boolean sptSet[]) {
         // Initialize min value
-        int min = Integer.MAX_VALUE, min_index = -1;
+        double min = 100;
+        int min_index = -1;
 
         for (int v = 0; v < V; v++)
             if (sptSet[v] == false && dist[v] <= min) {
@@ -130,7 +151,7 @@ public class Heart {
         return min_index;
     }
 
-    void printSolution(int dist[], int n) {
+    void printSolution(double dist[], int n) {
         System.out.println("Vertex   Distance from Source");
         for (int i = 0; i < V; i++)
             System.out.println(i + " tt " + dist[i]);
